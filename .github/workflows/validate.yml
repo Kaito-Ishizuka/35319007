@@ -1,0 +1,22 @@
+name: Validate app
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install Babel parser
+        run: npm install --no-save @babel/core @babel/cli @babel/preset-react
+      - name: Validate JSX syntax
+        run: npx babel src/App.jsx --presets @babel/preset-react --out-file /tmp/App.js
